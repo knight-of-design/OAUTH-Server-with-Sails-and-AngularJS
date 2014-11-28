@@ -1045,7 +1045,7 @@ These instructions are for creating an OAuth server the “Sails way” using Sa
                         user_id: user.id
                     }).then(function (token) {
                         return next(null, token.access_token, token.refresh_token, {
-                            expires_in: token.expires_in()
+                            expires_in: token.calc_expires_in()
                         });
                     });
                 });
@@ -1070,7 +1070,7 @@ These instructions are for creating an OAuth server the “Sails way” using Sa
                         client_id: token.client_id
                     }).then(function (token) {
                         return done(null, token.access_token, token.refresh_token, {
-                            expires_in: token.expires_in()
+                            expires_in: token.calc_expires_in()
                         });
 
                     });
@@ -1102,7 +1102,7 @@ These instructions are for creating an OAuth server the “Sails way” using Sa
 
                 tokenInfo: function (data, context) {
                     var token = context.authorization.token;
-                    token.expires_in = token.expires_in();
+                    token.expires_in = token.calc_expires_in();
                     return {
                         identity: context.identity,
                         authorization: context.authorization
