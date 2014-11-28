@@ -424,7 +424,7 @@ These instructions are for creating an OAuth server the “Sails way” using Sa
                         type: 'string'
                     },
 
-                    expires_in: function () {
+                    calc_expires_in: function () {
                         return Math.floor(new Date(this.expiration_date).getTime() / 1000 - new Date().getTime() / 1000);
                     },
 
