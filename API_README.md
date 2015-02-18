@@ -102,46 +102,46 @@
     request = require('request'),
     BearerStrategy = require('passport-http-bearer').Strategy,
     bearerVerifyHandler;
-/**
- * BearerStrategy
- *
- * This strategy is used to authenticate either users or clients based on an access token
- * (aka a bearer token).  If a user, they must have previously authorized a client
- * application, which is issued an access token to make requests on behalf of
- * the authorizing user.
- */
-bearerVerifyHandler = function(req, token, next) {
-    process.nextTick(function() {
-        var options = {
-                url: 'http://localhost:1336/oauth/token-info',//sails.config.security.authserver,
-                json: true,
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                }
-            },
-
-            callback = function (error, response, info){
-                if (error || info=="Unauthorized") return next(error || new Error(info));
-                next(null,info.identity,info.authorization);
-            };
-
-        request.post(options,callback);
-    });
-};
-
-passport.use(new BearerStrategy({ passReqToCallback: true},bearerVerifyHandler));
-
-module.exports = function (req, res, next) {
-    passport.authenticate('bearer', { session: false}, function(error,identity,authorization) {
-
-        if (error) return res.serverError(401);
-
-        req.identity = identity;
-        req.authorization = authorization;
-
-        next();
-    })(req,res);
-};
+    /**
+     * BearerStrategy
+     *
+     * This strategy is used to authenticate either users or clients based on an access token
+     * (aka a bearer token).  If a user, they must have previously authorized a client
+     * application, which is issued an access token to make requests on behalf of
+     * the authorizing user.
+     */
+    bearerVerifyHandler = function(req, token, next) {
+        process.nextTick(function() {
+            var options = {
+                    url: 'http://localhost:1336/oauth/token-info',//sails.config.security.authserver,
+                    json: true,
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                },
+    
+                callback = function (error, response, info){
+                    if (error || info=="Unauthorized") return next(error || new Error(info));
+                    next(null,info.identity,info.authorization);
+                };
+    
+            request.post(options,callback);
+        });
+    };
+    
+    passport.use(new BearerStrategy({ passReqToCallback: true},bearerVerifyHandler));
+    
+    module.exports = function (req, res, next) {
+        passport.authenticate('bearer', { session: false}, function(error,identity,authorization) {
+    
+            if (error) return res.serverError(401);
+    
+            req.identity = identity;
+            req.authorization = authorization;
+    
+            next();
+        })(req,res);
+    };
 
         ```
 
